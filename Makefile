@@ -49,9 +49,11 @@ manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and Cust
 
 .PHONY: generate
 generate: controller-gen ## Generate code containing DeepCopy, DeepCopyInto, and DeepCopyObject method implementations.
-	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
-	@scripts/generate_client.sh
-	@scripts/generate_openapi.sh
+	@hack/generate_client.sh
+	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./apis/..."
+
+
+
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.

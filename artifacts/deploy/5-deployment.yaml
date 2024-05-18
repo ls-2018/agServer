@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: cicd-apiserver-deployment
+  namespace: cicd-apiserver
+  labels:
+    apiserver: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      apiserver: "true"
+  template:
+    metadata:
+      name: cicd-apiserver-pod
+      labels:
+        apiserver: "true"
+    spec:
+      serviceAccountName: apiserver
+      containers:
+      - name: cicd-apiserver
+        image: jackyzhangfd/cicd-kube-apiserver:2.0
+        imagePullPolicy: Always
+        command: ["/cicd-apiserver"]
+        args:
+        - --etcd-servers=http://localhost:2379
+        - --cert-dir=/tmp/certs
+        - --secure-port=8443
+      - name: etcd
+        image: quay.io/coreos/etcd:v3.2.24
+        workingDir: /tmp

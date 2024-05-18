@@ -30,3 +30,4 @@ vendor
 # Ignore DevSpace cache and log folder
 .devspace/
 .DS_Store
+report/*

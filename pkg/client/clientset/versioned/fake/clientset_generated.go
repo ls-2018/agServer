@@ -24,8 +24,8 @@ import (
 	fakediscovery "k8s.io/client-go/discovery/fake"
 	"k8s.io/client-go/testing"
 	clientset "my.domain/guestbook/pkg/client/clientset/versioned"
-	myv1 "my.domain/guestbook/pkg/client/clientset/versioned/typed/apps/v1"
-	fakemyv1 "my.domain/guestbook/pkg/client/clientset/versioned/typed/apps/v1/fake"
+	myv1alpha1 "my.domain/guestbook/pkg/client/clientset/versioned/typed/apps/v1alpha1"
+	fakemyv1alpha1 "my.domain/guestbook/pkg/client/clientset/versioned/typed/apps/v1alpha1/fake"
 )
 
 // NewSimpleClientset returns a clientset that will respond with the provided objects.
@@ -78,7 +78,7 @@ var (
 	_ testing.FakeClient  = &Clientset{}
 )
 
-// MyV1 retrieves the MyV1Client
-func (c *Clientset) MyV1() myv1.MyV1Interface {
-	return &fakemyv1.FakeMyV1{Fake: &c.Fake}
+// MyV1alpha1 retrieves the MyV1alpha1Client
+func (c *Clientset) MyV1alpha1() myv1alpha1.MyV1alpha1Interface {
+	return &fakemyv1alpha1.FakeMyV1alpha1{Fake: &c.Fake}
 }

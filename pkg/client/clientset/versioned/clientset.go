@@ -24,23 +24,23 @@ import (
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
-	myv1 "my.domain/guestbook/pkg/client/clientset/versioned/typed/apps/v1"
+	myv1alpha1 "my.domain/guestbook/pkg/client/clientset/versioned/typed/apps/v1alpha1"
 )
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	MyV1() myv1.MyV1Interface
+	MyV1alpha1() myv1alpha1.MyV1alpha1Interface
 }
 
 // Clientset contains the clients for groups.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	myV1 *myv1.MyV1Client
+	myV1alpha1 *myv1alpha1.MyV1alpha1Client
 }
 
-// MyV1 retrieves the MyV1Client
-func (c *Clientset) MyV1() myv1.MyV1Interface {
-	return c.myV1
+// MyV1alpha1 retrieves the MyV1alpha1Client
+func (c *Clientset) MyV1alpha1() myv1alpha1.MyV1alpha1Interface {
+	return c.myV1alpha1
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -87,7 +87,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 
 	var cs Clientset
 	var err error
-	cs.myV1, err = myv1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.myV1alpha1, err = myv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.myV1 = myv1.New(c)
+	cs.myV1alpha1 = myv1alpha1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

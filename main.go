@@ -1,28 +1,25 @@
 package main
 
 import (
-	"fmt"
-	genericapiserver "k8s.io/apiserver/pkg/server"
-	"my.domain/guestbook/cmd/v2/options"
+	"flag"
+	"my.domain/guestbook/cmd/server"
+
+	genericserver "k8s.io/apiserver/pkg/server"
+	"k8s.io/component-base/logs"
+	"k8s.io/klog/v2"
 )
 
 func main() {
-	opts := options.NewOptions()
-	fmt.Println(runCommand(opts, genericapiserver.SetupSignalHandler()))
-}
-func runCommand(o *options.Options, stopCh <-chan struct{}) error {
-
-	config, err := o.ServerConfig()
-
-	if err != nil {
-		return err
+	// 把cobra cmd做出来
+	stopCh := genericserver.SetupSignalHandler()
+	options := server.NewServerOptions()
+	cmd := server.NewCommandStartServer(options, stopCh)
+	cmd.Flags().AddGoFlagSet(flag.CommandLine)
+	// 初始化以下log， 需要在parse flag之后
+	logs.InitLogs()
+	defer logs.FlushLogs()
+	// 启动
+	if err := cmd.Execute(); err != nil {
+		klog.Fatal(err)
 	}
-
-	s, err := config.Complete()
-
-	if err != nil {
-		return err
-	}
-
-	return s.RunUntil(stopCh)
 }
