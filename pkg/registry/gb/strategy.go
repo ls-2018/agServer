@@ -24,6 +24,66 @@ type GuestBookStrategy struct {
 	names.NameGenerator
 }
 
+// PrepareForCreate RESTCreateStrategy
+func (g GuestBookStrategy) PrepareForCreate(ctx context.Context, obj runtime.Object) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// Validate RESTCreateStrategy
+func (g GuestBookStrategy) Validate(ctx context.Context, obj runtime.Object) field.ErrorList {
+	//TODO implement me
+	panic("implement me")
+}
+
+// WarningsOnCreate RESTCreateStrategy
+func (g GuestBookStrategy) WarningsOnCreate(ctx context.Context, obj runtime.Object) []string {
+	//TODO implement me
+	panic("implement me")
+}
+
+// NamespaceScoped RESTUpdateStrategy
+func (g GuestBookStrategy) NamespaceScoped() bool {
+	//TODO implement me
+	panic("implement me")
+}
+
+// AllowCreateOnUpdate RESTUpdateStrategy
+func (g GuestBookStrategy) AllowCreateOnUpdate() bool {
+	//TODO implement me
+	panic("implement me")
+}
+
+// PrepareForUpdate RESTUpdateStrategy
+func (g GuestBookStrategy) PrepareForUpdate(ctx context.Context, obj, old runtime.Object) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// ValidateUpdate RESTUpdateStrategy
+func (g GuestBookStrategy) ValidateUpdate(ctx context.Context, obj, old runtime.Object) field.ErrorList {
+	//TODO implement me
+	panic("implement me")
+}
+
+// WarningsOnUpdate RESTUpdateStrategy
+func (g GuestBookStrategy) WarningsOnUpdate(ctx context.Context, obj, old runtime.Object) []string {
+	//TODO implement me
+	panic("implement me")
+}
+
+// Canonicalize RESTUpdateStrategy
+func (g GuestBookStrategy) Canonicalize(obj runtime.Object) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// AllowUnconditionalUpdate RESTUpdateStrategy
+func (g GuestBookStrategy) AllowUnconditionalUpdate() bool {
+	//TODO implement me
+	panic("implement me")
+}
+
 func NewStrategy(typer runtime.ObjectTyper) Strategy {
 	return &GuestBookStrategy{typer, names.SimpleNameGenerator}
 }
@@ -43,47 +103,4 @@ func MatchGuestBook(label labels.Selector, field fields.Selector) storage.Select
 		Field:    field,
 		GetAttrs: GetAttrs,
 	}
-}
-
-func (GuestBookStrategy) AllowCreateOnUpdate() bool {
-	return false
-}
-func (GuestBookStrategy) Canonicalize(obj runtime.Object) {
-
-}
-func (GuestBookStrategy) NamespaceScoped() bool {
-	return true
-}
-func (GuestBookStrategy) PrepareForCreate(ctx context.Context, obj runtime.Object) {
-
-}
-
-func (GuestBookStrategy) Validate(ctx context.Context, obj runtime.Object) field.ErrorList {
-	errs := field.ErrorList{} //承载发现的错误
-
-	js := obj.(*v1alpha1.GuestBook)
-	if js.Spec.InstanceAmount > 10 {
-		errs = append(errs, field.TooMany(field.NewPath("spec").Key("instanceamount"), js.Spec.InstanceAmount, 10))
-	}
-	if len(errs) > 0 {
-		return errs
-	} else {
-		return nil
-	}
-}
-func (GuestBookStrategy) WarningsOnCreate(ctx context.Context, obj runtime.Object) []string {
-	return []string{}
-}
-
-func (GuestBookStrategy) AllowUnconditionalUpdate() bool {
-	return false
-}
-func (GuestBookStrategy) PrepareForUpdate(ctx context.Context, obj runtime.Object, old runtime.Object) {
-
-}
-func (GuestBookStrategy) ValidateUpdate(ctx context.Context, obj, old runtime.Object) field.ErrorList {
-	return field.ErrorList{}
-}
-func (GuestBookStrategy) WarningsOnUpdate(ctx context.Context, obj runtime.Object, old runtime.Object) []string {
-	return []string{}
 }

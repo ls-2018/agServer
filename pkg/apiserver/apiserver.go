@@ -99,8 +99,8 @@ func (ccfg completedConfig) NewServer() (*CicdServer, error) {
 		Codecs,
 	)
 	v1alphastorage := map[string]rest.Storage{}
-	v1alphastorage["GuestBooks"] = cicdregistry.RESTWithErrorHandler(jsstorage.NewREST(Scheme, ccfg.GenericConfig.RESTOptionsGetter))
-	apiGroupInfo.VersionedResourcesStorageMap["v1alpha"] = v1alphastorage
+	v1alphastorage["guestbook"] = cicdregistry.RESTWithErrorHandler(jsstorage.NewREST(Scheme, ccfg.GenericConfig.RESTOptionsGetter))
+	apiGroupInfo.VersionedResourcesStorageMap[v1alpha1.SchemeGroupVersion.Version] = v1alphastorage
 
 	if err = server.GenericAPIServer.InstallAPIGroup(&apiGroupInfo); err != nil {
 		return nil, err

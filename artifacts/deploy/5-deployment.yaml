@@ -19,7 +19,7 @@ spec:
       serviceAccountName: apiserver
       containers:
       - name: cicd-apiserver
-        image: jackyzhangfd/cicd-kube-apiserver:2.0
+        image: acejilam/cicd-kube-apiserver:2.0
         imagePullPolicy: Always
         command: ["/cicd-apiserver"]
         args:
@@ -27,5 +27,5 @@ spec:
         - --cert-dir=/tmp/certs
         - --secure-port=8443
       - name: etcd
-        image: quay.io/coreos/etcd:v3.2.24
+        image: 	quay.m.daocloud.io/coreos/etcd:v3.2.24
         workingDir: /tmp
