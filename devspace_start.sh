@@ -36,4 +36,4 @@ export PATH="./bin:$PATH"
 #bash --norc
 
 
-go build -o ag . && dlv --listen=:12345 --headless=true --api-version=2 --accept-multiclient exec ag
+go build -o ag . && dlv --listen=:33333 --headless=true --api-version=2 --accept-multiclient exec ag

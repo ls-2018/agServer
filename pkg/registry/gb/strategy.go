@@ -32,20 +32,19 @@ func (g GuestBookStrategy) PrepareForCreate(ctx context.Context, obj runtime.Obj
 
 // Validate RESTCreateStrategy
 func (g GuestBookStrategy) Validate(ctx context.Context, obj runtime.Object) field.ErrorList {
-	//TODO implement me
-	panic("implement me")
+	fmt.Println("Validate")
+	return nil
 }
 
 // WarningsOnCreate RESTCreateStrategy
 func (g GuestBookStrategy) WarningsOnCreate(ctx context.Context, obj runtime.Object) []string {
-	//TODO implement me
-	panic("implement me")
+	fmt.Println("WarningsOnCreate")
+	return nil
 }
 
 // NamespaceScoped RESTUpdateStrategy
 func (g GuestBookStrategy) NamespaceScoped() bool {
-	//TODO implement me
-	panic("implement me")
+	return false
 }
 
 // AllowCreateOnUpdate RESTUpdateStrategy

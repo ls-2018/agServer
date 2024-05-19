@@ -42,8 +42,7 @@ func NewServerOptions() *ServerOptions {
 			CertDirectory: "./certs",
 			PairName:      "apiserver",
 		}
-		//直接写死 省的烦
-		o.RecommendedOptions.Etcd.StorageConfig.Transport.ServerList = []string{}
+		o.RecommendedOptions.Etcd.StorageConfig.Transport.ServerList = []string{"http://localhost:2379"}
 		//rc.CoreAPI.CoreAPIKubeconfigPath = RemoteKubeConfig
 		//rc.Authentication.RemoteKubeConfigFile = RemoteKubeConfig
 		//rc.Authorization.RemoteKubeConfigFile = RemoteKubeConfig
@@ -51,15 +50,13 @@ func NewServerOptions() *ServerOptions {
 	return o
 }
 func (o *ServerOptions) Validate() error {
-	errors := []error{}
+	var errors []error
 	errors = append(errors, o.RecommendedOptions.Validate()...)
 	//把errors数组合并成单独error
 	return utilerrors.NewAggregate(errors)
 }
 func (o *ServerOptions) Complete() error {
-	//把我们的admission plugin加进去
 	plugin.Register(o.RecommendedOptions.Admission.Plugins)
-	//plugin 的相互顺序很重要，最好不要破坏已有顺序，直接加在尾部
 	o.RecommendedOptions.Admission.RecommendedPluginOrder = append(o.RecommendedOptions.Admission.RecommendedPluginOrder, "GuestBook")
 	return nil
 }

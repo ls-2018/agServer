@@ -31,13 +31,14 @@ deployments:
     # This deployment uses `kubectl` but you can also define `helm` deployments
     kubectl:
       manifests:
-        - debug.yaml
+        - ./artifacts/deploy/5-deployment.yaml
 
 # This is sources.list list of `dev` containers that are based on the containers created by your deployments
 dev:
   app:
+    container: cicd-apiserver
     # Search for the container that runs this image
-    imageSelector: centos:7
+    imageSelector: acejilam/cicd-kube-apiserver:2.0
     devImage: registry.cn-hangzhou.aliyuncs.com/acejilam/mygo:v1.22.2
     sync:
     - path: ./:/data
@@ -58,3 +59,5 @@ dev:
     # Forward the following ports to be able access your application via localhost
     ports:
       - port: "12345"
+      - port: "2345"
+      - port: "33333"

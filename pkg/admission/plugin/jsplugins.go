@@ -12,28 +12,25 @@ import (
 	listers "my.domain/guestbook/pkg/client/listers/apps/v1alpha1"
 )
 
-// plugin必须实现admission.Interface接口，而内嵌的admission.Handler结构体就实现了
 type GuestBookPlugin struct {
 	*admission.Handler
 	jsLister listers.GuestBookLister
 }
 
-// 把这个plugin注册进api server体系中的方法，会在server启动的代码中调用
-// plugin 参数是server的plugins集合，需要把我们的放进去
 func Register(plugin *admission.Plugins) {
 	plugin.Register("GuestBook", func(config io.Reader) (admission.Interface, error) {
 		return New()
 	})
 }
 
-// 创建plugin结构体实例的方法
 func New() (*GuestBookPlugin, error) {
+	var _ admission.Interface = GuestBookPlugin{}
 	return &GuestBookPlugin{
 		Handler: admission.NewHandler(admission.Create),
 	}, nil
 }
 
-// 有了validate方法就实现了admission.ValidationInterface，从而在validating阶段被调用
+// Validate 有了validate方法就实现了admission.ValidationInterface，从而在validating阶段被调用
 func (jsp *GuestBookPlugin) Validate(ctx context.Context, a admission.Attributes, _ admission.ObjectInterfaces) error {
 	if a.GetKind().GroupKind() != v1alpha1.Kind("GuestBook") { //所有object的valid都会进来，所以我们要验一下是不是该关心的
 		return nil
@@ -58,7 +55,7 @@ func (jsp *GuestBookPlugin) Validate(ctx context.Context, a admission.Attributes
 
 }
 
-// 有了这个方法，plugin就实现了WantsCicdInformerFactory接口，可以获取到cicd informer了
+// SetInformerFactory 有了这个方法，plugin就实现了WantsCicdInformerFactory接口，可以获取到cicd informer了
 func (jsp *GuestBookPlugin) SetInformerFactory(f informers.SharedInformerFactory) {
 	jsp.jsLister = f.My().V1alpha1().GuestBooks().Lister()
 	jsp.SetReadyFunc(f.My().V1alpha1().GuestBooks().Informer().HasSynced)
